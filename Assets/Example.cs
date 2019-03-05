@@ -17,9 +17,4 @@ public class Example : MonoBehaviour
     {
         ElevateSDK.Instance.Purchase("0", 1);
     }
-
-    public void Login()
-    {
-        ElevateSDK.Instance.Login();
-    }
 }

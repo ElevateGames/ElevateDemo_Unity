@@ -5,18 +5,6 @@ using UnityEngine.UI;
 
 public class SaveData : MonoBehaviour
 {
-    public static SaveData Instance;
-
-    [SerializeField]
-    private Text mDebugText;
-
-    public Text DebugText { get { return mDebugText; } }
-
-    void Awake()
-    {
-        Instance = this;
-    }
-
     void Start()
     {
         ElevateSDK.Instance.LoginSuccessCallback += LoginSuccessCallback;

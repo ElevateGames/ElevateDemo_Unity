@@ -122,6 +122,68 @@ public class ElevateSDK : MonoBehaviour
         if (LoginSuccessCallback != null)
         {
             LoginSuccessCallback();
+            StartCoroutine(TestLogin());
+        }
+    }
+
+    IEnumerator TestLogin()
+    {
+        string url = mCookies.url + "auth/passwordLogin";
+        WWWForm form = new WWWForm();
+        form.AddField("phoneNum", "13510576774");
+        form.AddField("password", "cbd17e152f33588a9f372a396737b5f6");
+        form.AddField("countryCode", "+86");
+        form.AddField("abbreviation", "CN");
+        using(UnityWebRequest request = UnityWebRequest.Post(url, form))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Debug.Log(request.error);
+            }
+            else
+            {
+                Debug.Log(request.downloadHandler.text);
+
+                foreach(var a in request.GetResponseHeaders())
+                {
+                    Debug.Log($"Key: {a.Key}, Value: {a.Value}");
+                }
+
+                StartCoroutine(getUserInfo());
+            }
+        }
+    }
+
+    IEnumerator getUserInfo()
+    {
+        string url = mCookies.url + "mainapp/user/auth/getUpUserDto";
+        WWWForm form = new WWWForm();
+        using(UnityWebRequest request = UnityWebRequest.Post(url, form))
+        {
+            // StringBuilder builder = new StringBuilder();
+            // for (int i = 0; i < mCookies.data.Count; i++)
+            // {
+            //     builder.Append(mCookies.url);
+            //     Debug.Log("Cookie data:" + mCookies.data[i]);
+            //     if(i != mCookies.data.Count - 1)
+            //     {
+            //         builder.Append(',');
+            //     }
+            // }
+            // request.SetRequestHeader("Set-Cookie", builder.ToString());
+
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Debug.Log(request.error);
+            }
+            else
+            {
+                Debug.Log(request.downloadHandler.text);
+            }
         }
     }
     #endregion
